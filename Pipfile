@@ -9,6 +9,7 @@ tox = "*"
 
 [packages]
 flask = "*"
+redis = "*"
 
 [requires]
 python_version = "3.7"
