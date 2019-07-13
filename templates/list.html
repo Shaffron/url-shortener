@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="offset-lg-1 col-lg-10" style="margin-top: 50px;">
+        <a class="btn btn-secondary" href="/" style="margin-bottom: 20px;">
+            <i class="fa fa-home"></i>
+        </a>
+        <table id="table_urls" class="table table-sm table-dark table-bordered table-table-responsive table-striped">
+            <colgroup>
+                <col width="10%" />
+                <col width="35%" />
+                <col width="55%" />
+            </colgroup>
+            <thead>
+                <th style="text-align: center;">No.</th>
+                <th style="text-align: center;">Shorten</th>
+                <th style="text-align: center;">Origin</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>http://localhost/2TAvc1</td>
+                    <td>https://www.google.com</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>http://localhost/2TAvc2</td>
+                    <td>https://www.google.com</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
