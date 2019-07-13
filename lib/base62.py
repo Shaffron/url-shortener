@@ -6,10 +6,10 @@ class Base62:
     def encode(cls, num):
         result = []
         if num == 0:
-            result.append(TARGET[0])
+            result.append(cls.TARGET[0])
         while num > 0:
-            result.append(TARGET[num % TARGET_LENGTH])
-            num //= TARGET_LENGTH
+            result.append(cls.TARGET[num % cls.TARGET_LENGTH])
+            num //= cls.TARGET_LENGTH
         result = ''.join(reversed(result))
         return result
 
@@ -18,5 +18,5 @@ class Base62:
         num = 0
         code_list = list(code)
         for index, code in enumerate(reversed(code_list)):
-            num += TARGET.index(code) * TARGET_LENGTH ** index
+            num += cls.TARGET.index(code) * cls.TARGET_LENGTH ** index
         return num
