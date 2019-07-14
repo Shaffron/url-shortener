@@ -18,14 +18,17 @@ class IndexView(MethodView):
 class RedirectView(MethodView):
     def get(self, url):
         manager = UrlManager()
-        decoded = Base62.decode(url)
-        shorten_url = manager.get('%s:%s' % (KEY.PREFIX.value, decoded))
+        shorten_url = manager.get('%s:%s' % (KEY.PREFIX.value, url))
         if not shorten_url:
             return render_template('/404.html')
         return redirect(shorten_url)
 
-    def post(self, url):
-        print(request)
+
+
+class UrlGeneratorView(MethodView):
+    def post(self):
+        body = request.body
+        url = body.get('url')
         manager = UrlManager()
         index = manager.increase_total_counter()
         shorten = Base62.encode(index)
