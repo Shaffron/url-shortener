@@ -12,21 +12,18 @@
                 <col width="55%" />
             </colgroup>
             <thead>
-                <th style="text-align: center;">No.</th>
-                <th style="text-align: center;">Shorten</th>
-                <th style="text-align: center;">Origin</th>
+                <th class="tc">No.</th>
+                <th class="tc">Shorten</th>
+                <th class="tc">Origin</th>
             </thead>
             <tbody>
+                {% for url in urls %}
                 <tr>
-                    <td>1</td>
-                    <td>http://localhost/2TAvc1</td>
-                    <td>https://www.google.com</td>
+                    <td class="tc">{{ url.index }}</td>
+                    <td class="tc">{{ url.shorten }}</td>
+                    <td>{{ url.protocol }}://{{ url.origin }}</td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>http://localhost/2TAvc2</td>
-                    <td>https://www.google.com</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

@@ -1,5 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Varela+Round);
 
+
 #app {
     height:100vh;
     width:100%;
@@ -35,6 +36,10 @@
 
 #not_found i {
     color: purple;
+}
+
+.tc {
+    text-align: center !important;
 }
 
 .nav-pills .nav-link:not(.active) {

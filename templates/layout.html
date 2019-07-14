@@ -4,17 +4,15 @@
         <title>URL Compressor</title>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" />
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/preset.css')}}" />
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/default.css')}}" />
+        {% block css %} {% endblock %}
     </head>
     <body>
         <div id="app" class="row">
-            {% block content %}
-            {% endblock %}
+            {% block content %} {% endblock %}
         </div>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/index.js')}}"></script>
+        {% block js %} {% endblock %}
     </body>
 </html>

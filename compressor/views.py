@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timezone
 
 from flask import render_template, request, redirect
@@ -18,35 +19,50 @@ class IndexView(MethodView):
 class RedirectView(MethodView):
     def get(self, url):
         manager = UrlManager()
-        shorten_url = manager.get('%s:%s' % (KEY.PREFIX.value, url))
-        if not shorten_url:
+        response = manager.get('%s:%s' % (KEY.PREFIX.value, url))
+        if not response:
             return render_template('/404.html')
-        return redirect(shorten_url)
+        else:
+            response = json.loads(response)
+            return redirect('%s://%s' % (response['protocol'], response['origin']))
 
 
 
 class UrlGeneratorView(MethodView):
     def post(self):
-        body = request.body
-        url = body.get('url')
+        category = request.form.get('category')
+        protocol = request.form.get('protocol')
+        origin = request.form.get('origin')
+
         manager = UrlManager()
         index = manager.increase_total_counter()
         shorten = Base62.encode(index)
+
+        # check key collision
+        if (
+            shorten in ['list', 'generate'] or
+            manager.get('%s:%s' % (KEY.PREFIX.value, shorten)) is not None
+        ):
+            index = manager.increase_total_counter()
+            shorten = Base62.encode(index)
+
         payload = {
-            'origin': url,
+            'index': index,
+            'protocol': protocol,
+            'origin': origin,
             'shorten': shorten,
             'created': datetime.now(tz=timezone.utc).strftime('%Y-%m-%dT%H:%M:%S %z')
         }
-        response = manager.set('%s:%s' % (KEY.PREFIX.value, index), payload)
+        response = manager.set('%s:%s' % (KEY.PREFIX.value, shorten), payload)
         if response:
-            return shorten, 200
+            return { 'url': '%s%s' % (request.host_url, shorten) }, 200
         else:
-            'error', 500
+            return 'error', 500
 
 
 
 class UrlListView(MethodView):
     def get(self):
         manager = UrlManager()
-        shorten_urls = manager.get_all_shorten_urls()
-        return render_template('/list.html', urls=shorten_urls)
+        urls = manager.get_all_shorten_urls()
+        return render_template('/list.html', urls=urls)
