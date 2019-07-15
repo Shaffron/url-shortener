@@ -36,15 +36,23 @@ class UrlGeneratorView(MethodView):
 
         manager = UrlManager()
         index = manager.increase_total_counter()
-        shorten = Base62.encode(index)
+
+        if 'specific' in request.form:
+            specified = True
+            shorten = request.form.get('specific')
+        else:
+            shorten = Base62.encode(index)
 
         # check key collision
         if (
             shorten in ['list', 'generate'] or
             manager.get('%s:%s' % (KEY.PREFIX.value, shorten)) is not None
         ):
-            index = manager.increase_total_counter()
-            shorten = Base62.encode(index)
+            if specified:
+                return { 'message': '[%s] already in use' % shorten }, 409
+            else:
+                index = manager.increase_total_counter()
+                shorten = Base62.encode(index)
 
         payload = {
             'index': index,
@@ -56,8 +64,6 @@ class UrlGeneratorView(MethodView):
         response = manager.set('%s:%s' % (KEY.PREFIX.value, shorten), payload)
         if response:
             return { 'url': '%s%s' % (request.host_url, shorten) }, 200
-        else:
-            return 'error', 500
 
 
 

@@ -27,5 +27,5 @@ class UrlManager(RedisClient):
 
     def get_all_shorten_urls(self):
         urls = self.redis.smembers(KEY.ALL_URLS.value)
-        response = [json.loads(url) for url in urls]
+        response = sorted([json.loads(url) for url in urls], key=lambda x:x['index'])
         return response
