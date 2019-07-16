@@ -19,15 +19,3 @@ class RedisClient:
             db=self.db
         )
         return client
-
-    def get(self, key):
-        response = self.redis.get(key)
-        return response
-
-    def set(self, key, value):
-        response = self.redis.set(key, value, nx=True)
-        return response
-
-    def increment(self):
-        response = self.redis.incr('counter')
-        return response

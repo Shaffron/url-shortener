@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="offset-lg-1 col-lg-10" style="margin-top: 50px;">
+        <a class="btn btn-secondary" href="/" style="margin-bottom: 20px;">
+            <i class="fa fa-home"></i>
+        </a>
+        <table id="table_urls" class="table table-sm table-dark table-bordered table-striped">
+            <colgroup>
+                <col width="10%" />
+                <col width="35%" />
+                <col width="55%" />
+            </colgroup>
+            <thead>
+                <th class="tc">No.</th>
+                <th class="tc">Shorten</th>
+                <th class="tc">Origin</th>
+            </thead>
+            <tbody>
+                {% for url in urls %}
+                <tr>
+                    <td class="tc">{{ url.index }}</td>
+                    <td class="tc">{{ url.shorten }}</td>
+                    <td title="{{ url.protocol }}://{{ url.origin }}">
+                        {{ url.protocol }}://{{ url.origin }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
