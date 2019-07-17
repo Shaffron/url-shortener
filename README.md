@@ -2,14 +2,14 @@
 
 Shorten URL Service
 
-# Environments
-## Python
+## Environments
+### Python
 3.7 +
 
-## Redis
+### Redis
 5.0.0 +
 
-## Docker
+### Docker
 ```bash
 # Docker Client
 Client: Docker Engine - Community
@@ -36,11 +36,11 @@ Server: Docker Engine - Community
 docker-compose version 1.23.2, build 1110ad01
 ```
 
-## Browser
+### Browser
 All of ES6+ (Javascript)  support browser
 
 
-# Virtualenv
+## Virtualenv
 > Before you run application or test  
 activate virtualenv first
 
@@ -55,8 +55,8 @@ source virtualenv/Scripts/activate
 pip install -r requirements.txt
 ```
 
-# Run
-## Development Server
+## Run
+### Development Server
 <code>docker & docker-compose required</code>
 ```bash
 docker-compose up
@@ -65,7 +65,7 @@ After development server is up
 now we can explore shorten url service at <a href='http://localhost:5000'>http://localhost:5000</a>
 
 
-## Test
+### Test
 One time test with code coverage
 ```bash
 pytest --cov --cov-config .coveragerc
@@ -76,8 +76,11 @@ If you want test continuously, run below command
 ptw
 ```
 
+## Demo
+![Semantic description of image](https://gitlab.com/with.alpha.and.omega/compressor/wikis/uploads/ede4e3137b86ddf202713259eabb2a4f/demo.gif)
 
-# License
+
+## License
 MIT
 
 Copyright (c) 2019-present, YoungJin Kim
