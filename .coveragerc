@@ -1,0 +1,8 @@
+[run]
+source =
+    ./
+omit =
+    **/tests/*.py
+    static/*
+    virtualenv/*
+    settings/*.py

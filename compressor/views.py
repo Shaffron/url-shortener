@@ -37,7 +37,7 @@ class UrlGeneratorView(MethodView):
         manager = UrlManager()
         index = manager.increase_total_counter()
 
-        if 'specific' in request.form:
+        if category == 'specific' and 'specific' in request.form:
             specified = True
             shorten = request.form.get('specific')
         else:
