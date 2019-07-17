@@ -29,15 +29,37 @@ class RedirectView(MethodView):
 
 
 class UrlGeneratorView(MethodView):
+    def __init__(self, *args, **kwargs):
+        self.manager = UrlManager()
+        self.category = request.form.get('category')
+        self.protocol = request.form.get('protocol')
+        self.origin = request.form.get('origin')
+
     def post(self):
-        category = request.form.get('category')
-        protocol = request.form.get('protocol')
-        origin = request.form.get('origin')
+        index, shorten = self.get_shorten_url()
 
-        manager = UrlManager()
-        index = manager.increase_total_counter()
+        payload = {
+            'index': index,
+            'protocol': self.protocol,
+            'origin': self.origin,
+            'shorten': shorten,
+            'created': datetime.now(tz=timezone.utc).strftime('%Y-%m-%dT%H:%M:%S %z')
+        }
 
-        if category == 'specific' and 'specific' in request.form:
+        response = self.insert_shorten_url(payload)
+        if response:
+            return { 'url': '%s%s' % (request.host_url, shorten) }, 200
+
+    def is_exist(self, shorten):
+        return self.manager.get('%s:%s' % (KEY.PREFIX.value, shorten)) is not None
+
+    def insert_shorten_url(self, payload):
+        return self.manager.set('%s:%s' % (KEY.PREFIX.value, payload['shorten']), payload)
+
+    def get_shorten_url(self):
+        index = self.manager.increase_total_counter()
+
+        if self.category == 'specific' and 'specific' in request.form:
             specified = True
             shorten = request.form.get('specific')
         else:
@@ -46,24 +68,17 @@ class UrlGeneratorView(MethodView):
         # check key collision
         if (
             shorten in ['list', 'generate'] or
-            manager.get('%s:%s' % (KEY.PREFIX.value, shorten)) is not None
+            self.manager.get('%s:%s' % (KEY.PREFIX.value, shorten)) is not None
         ):
             if specified:
                 return { 'message': '[%s] already in use' % shorten }, 409
             else:
-                index = manager.increase_total_counter()
-                shorten = Base62.encode(index)
-
-        payload = {
-            'index': index,
-            'protocol': protocol,
-            'origin': origin,
-            'shorten': shorten,
-            'created': datetime.now(tz=timezone.utc).strftime('%Y-%m-%dT%H:%M:%S %z')
-        }
-        response = manager.set('%s:%s' % (KEY.PREFIX.value, shorten), payload)
-        if response:
-            return { 'url': '%s%s' % (request.host_url, shorten) }, 200
+                is_exist = self.is_exist(shorten)
+                while not is_exist:
+                    index = self.manager.increase_total_counter()
+                    shorten = Base62.encode(index)
+                    is_exist = self.is_exist(shorten)
+        return index, shorten
 
 
 
