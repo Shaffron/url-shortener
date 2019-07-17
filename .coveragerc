@@ -2,4 +2,7 @@
 source =
     ./
 omit =
-    **/tests/test_*.py
+    **/tests/*.py
+    static/*
+    virtualenv/*
+    settings/*.py
