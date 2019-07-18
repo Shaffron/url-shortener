@@ -79,6 +79,9 @@ ptw
 ## Demo
 ![Semantic description of image](https://gitlab.com/with.alpha.and.omega/compressor/wikis/uploads/ede4e3137b86ddf202713259eabb2a4f/demo.gif)
 
+## Benchmark
+**[API Benchmark](https://gitlab.com/with.alpha.and.omega/compressor/wikis/API-Benchmark)**
+
 
 ## License
 MIT
